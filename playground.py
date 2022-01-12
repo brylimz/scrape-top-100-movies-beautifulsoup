@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+import itertools
 response = requests.get("https://news.ycombinator.com/news")
 yc_web_page = response.text
 
@@ -13,11 +14,23 @@ for article_tag in articles:
     articles_texts.append(text)
     link = article_tag.get("href")
     articles_links.append(link)
-    articles_upvotes = [score.getText() for score in soup.find_all(name="span", class_="score")]
 
-print(articles_texts)
-print(articles_links)
-print(articles_upvotes)
+articles_upvotes = [int(score.getText().split()[0]) for score in soup.find_all(name="span", class_="score")]
+
+largest_number = max(articles_upvotes)
+largest_index = articles_upvotes.index(largest_number)
+print(articles_texts[largest_index])
+print(articles_links[largest_index])
+# print(articles_texts)
+# print(articles_links)
+# print(articles_upvotes)
+
+
+
+
+
+
+
 
 
 
